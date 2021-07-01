@@ -8,6 +8,7 @@ var high = 0;
 var deadCall;
 var deadDirection;
 var nullVar = 1;
+var bloodVar = 1;
 const css = window.document.styleSheets[0];
 var scrW = document.querySelector(".bg").offsetWidth;
 var scrH = document.querySelector(".bg").offsetHeight;
@@ -32,12 +33,14 @@ function landscape(){
   document.querySelector("h1").style.fontSize = "50px";
   document.querySelector("h1").style.lineHeight = "70px";
   document.querySelector(".footer").style.fontSize = "15px";
-  document.querySelector(".footer").style.left = "calc(50% - 110px)";
+  document.querySelector(".footer").style.left = "calc(50% - 120px)";
   for (var i = 0; i < document.querySelectorAll("h2").length; i++) {
     document.querySelectorAll("h2")[i].style.fontSize = "18px";
   }
-  document.querySelector("span").style.fontSize = "18px";
+  document.querySelectorAll("span")[0].style.fontSize = "18px";
+  document.querySelectorAll("span")[1].style.fontSize = "18px";
   document.querySelector(".sound").style.height = "60px";
+  document.querySelector(".blood").style.height = "60px";
 }
 function portrait(){
   document.querySelector(".alive").style.width = "200px";
@@ -45,12 +48,14 @@ function portrait(){
   document.querySelector("h1").style.fontSize = "80px";
   document.querySelector("h1").style.lineHeight = "100px";
   document.querySelector(".footer").style.fontSize = "20px";
-  document.querySelector(".footer").style.left = "calc(50% - 150px)";
+  document.querySelector(".footer").style.left = "calc(50% - 160px)";
   for (var i = 0; i < document.querySelectorAll("h2").length; i++) {
     document.querySelectorAll("h2")[i].style.fontSize = "24px";
   }
-  document.querySelector("span").style.fontSize = "24px";
+  document.querySelectorAll("span")[0].style.fontSize = "24px";
+  document.querySelectorAll("span")[1].style.fontSize = "24px";
   document.querySelector(".sound").style.height = "100px";
+  document.querySelector(".blood").style.height = "100px";
 }
 document.querySelector(".sound").addEventListener("click", function(){
   if(document.querySelector(".sound").getAttribute("src") == "srcs/monkey_happy.png"){
@@ -62,6 +67,18 @@ document.querySelector(".sound").addEventListener("click", function(){
     nullVar = 1;
     score = score+10;
     document.querySelector(".sound").setAttribute("src", "srcs/monkey_happy.png");
+  }
+});
+document.querySelector(".blood").addEventListener("click", function(){
+  if(document.querySelector(".blood").getAttribute("src") == "srcs/monkey_happy.png"){
+    bloodVar = 0;
+    score = score+10;
+    document.querySelector(".blood").setAttribute("src", "srcs/monkey_cant_see.png");
+  }
+  else if(document.querySelector(".blood").getAttribute("src") == "srcs/monkey_cant_see.png"){
+    bloodVar = 1;
+    score = score+10;
+    document.querySelector(".blood").setAttribute("src", "srcs/monkey_happy.png");
   }
 });
 document.addEventListener("click", start);
@@ -133,15 +150,21 @@ function start() {
       document.querySelector(".alive").style.animation = "myAnimation "+anim+" linear 0s infinite";
     }
     if(marker == 1){
-      document.querySelector(".box").style.display = "flex";
+      document.querySelectorAll(".box")[0].style.display = "flex";
+      document.querySelectorAll(".box")[1].style.display = "flex";
       document.querySelector(".alive").addEventListener("click",function(){
         score = score+30;
         if(nullVar){
           let audio = new Audio('sounds/squash.mp3');
           audio.play();
         }
+        if(bloodVar){
+          document.querySelector(".alive").setAttribute("src", "srcs/mosquito_dead.png");
+        }
+        else{
+          document.querySelector(".alive").setAttribute("src", "srcs/mosquito_dead_no_blood.png");
+        }
         document.querySelector(".score").textContent = "Score: "+score;
-        document.querySelector(".alive").setAttribute("src", "srcs/mosquito_dead.png");
         css.insertRule(`
          @keyframes myAnimation {
            0%   { `+(deadCall)+`: `+(height)+`vh; }
@@ -162,7 +185,8 @@ function start() {
           document.querySelector(".highScore").textContent = "CLICK ANYWHERE TO PLAY AGAIN";
           document.querySelector("h1").style.fontSize = "8vw";
           document.querySelector(".alive").style.display = "none";
-          document.querySelector(".box").style.display = "none";
+          document.querySelectorAll(".box")[0].style.display = "none";
+          document.querySelectorAll(".box")[1].style.display = "none";
           document.addEventListener("click", function(){
             location.reload();
             return false;
