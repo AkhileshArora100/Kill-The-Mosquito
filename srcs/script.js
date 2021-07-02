@@ -12,6 +12,22 @@ var bloodVar = 1;
 const css = window.document.styleSheets[0];
 var scrW = document.querySelector(".bg").offsetWidth;
 var scrH = document.querySelector(".bg").offsetHeight;
+var audio = new Audio('sounds/squash.mp3');
+var images;
+function preload() {
+    for (var i = 0; i < arguments.length; i++) {
+        images = new Image();
+        images.src = preload.arguments[i];
+    }
+}
+
+//-- usage --//
+preload(
+    "mosquito_dead.png",
+    "mosquito_dead_no_blood.png",
+    "monkey_cant_see.png",
+    "monkey_quiet.png"
+);
 window.addEventListener('orientationchange', function(){
   var orient = window.orientation;
   if(orient == 90 || orient == -90){
@@ -155,7 +171,6 @@ function start() {
       document.querySelector(".alive").addEventListener("click",function(){
         score = score+30;
         if(nullVar){
-          let audio = new Audio('sounds/squash.mp3');
           audio.play();
         }
         if(bloodVar){
